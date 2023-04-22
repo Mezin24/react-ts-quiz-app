@@ -1,22 +1,42 @@
+import { AnswerObject } from '../App';
+import { Wrapper } from './QuizCard.styles';
+import { ButtonWrapper } from './QuizCard.styles';
+
 type Props = {
   question: string;
-  answer: string;
   answers: string[];
-  cb: any;
-  userAnswer: any;
+  cb(e: React.MouseEvent<HTMLButtonElement>): void;
+  userAnswer: AnswerObject | undefined;
   questionNum: number;
-  totalQustions: number;
+  totalQuestions: number;
 };
 
 const QuizCart = ({
-  answer,
   answers,
   cb,
   question,
   questionNum,
-  totalQustions,
+  totalQuestions,
   userAnswer,
 }: Props) => {
-  return <div>QuizCart</div>;
+  return (
+    <Wrapper>
+      <p className='number'>
+        Question: {questionNum} / {totalQuestions}
+      </p>
+      <p>{question}</p>
+      {answers.map((q) => (
+        <ButtonWrapper
+          correct={userAnswer?.correctAnswer === q}
+          userClicked={userAnswer?.answer === q}
+          key={q}
+        >
+          <button onClick={cb} disabled={Boolean(userAnswer)} value={q}>
+            <span>{q}</span>
+          </button>
+        </ButtonWrapper>
+      ))}
+    </Wrapper>
+  );
 };
 export default QuizCart;
